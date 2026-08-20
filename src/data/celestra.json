@@ -1,0 +1,22 @@
+{
+  "label": "Celestra",
+  "description": "CELESTRA radial tyres — UTQG 440 rated (A-grade treadwear, traction, temperature).",
+  "groups": [
+    {
+      "groupLabel": "CELESTRA",
+      "items": [
+        { "size": "145/80R12", "pattern": "CELESTRA FERENTINO TL 74 T", "exVat": 17710, "incVat": 20898 },
+        { "size": "155/65R13", "pattern": "CELESTRA FERENTINO TL 73 T", "exVat": 19649, "incVat": 23186 },
+        { "size": "155/80R13", "pattern": "CELESTRA FERENTINO TL 79 T", "exVat": 19273, "incVat": 22743 },
+        { "size": "175/70R13", "pattern": "CELESTRA FERENTINO TL 82 T", "exVat": 19273, "incVat": 22743 },
+        { "size": "155/65R14", "pattern": "CELESTRA FERENTINO TL 75 T", "exVat": 18752, "incVat": 22128 },
+        { "size": "165/60R14", "pattern": "CELESTRA FERENTINO TL 75 H", "exVat": 18752, "incVat": 22128 },
+        { "size": "165/70R14", "pattern": "CELESTRA FERENTINO TL 85 T XL", "exVat": 18752, "incVat": 22128 },
+        { "size": "175/65R14", "pattern": "CELESTRA FERENTINO TL 86 T XL", "exVat": 20837, "incVat": 24588 },
+        { "size": "175/70R14", "pattern": "CELESTRA FERENTINO TL 88 T", "exVat": 21462, "incVat": 25326 },
+        { "size": "185/65R14", "pattern": "CELESTRA FERENTINO TL 86 H", "exVat": 22922, "incVat": 27048 },
+        { "size": "185/70R14", "pattern": "CELESTRA FERENTINO TL 88 H", "exVat": 23651, "incVat": 27909 }
+      ]
+    }
+  ]
+}

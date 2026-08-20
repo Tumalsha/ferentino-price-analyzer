@@ -1,0 +1,40 @@
+{
+  "label": "Passenger Car Radial",
+  "description": "E-LOGIC, PANTERA and DURATASPORTZ radial tyres for cars, SUVs and crossovers.",
+  "groups": [
+    {
+      "groupLabel": "E-LOGIC",
+      "items": [
+        { "size": "145/70R12", "pattern": "E-LOGIC FERENTINO TL 69 T", "exVat": 14635, "incVat": 17269 },
+        { "size": "145/80R12", "pattern": "E-LOGIC FERENTINO TL 74 T", "exVat": 15550, "incVat": 18349 },
+        { "size": "155/80R12", "pattern": "E-LOGIC FERENTINO 77T", "exVat": 18214, "incVat": 21492 },
+        { "size": "155/65R13", "pattern": "E-LOGIC FERENTINO TL 73 T", "exVat": 17253, "incVat": 20358 },
+        { "size": "155/70R13", "pattern": "E-LOGIC FERENTINO TL 75 T", "exVat": 18113, "incVat": 21373 },
+        { "size": "155/80R13", "pattern": "E-LOGIC FERENTINO TL 79 T", "exVat": 16923, "incVat": 19969 },
+        { "size": "165/65R13", "pattern": "E-LOGIC FERENTINO TL 77 T", "exVat": 17747, "incVat": 20941 },
+        { "size": "165/80R13", "pattern": "E-LOGIC FERENTINO TL 83 T", "exVat": 17381, "incVat": 20509 },
+        { "size": "175/70R13", "pattern": "E-LOGIC FERENTINO TL 82 T", "exVat": 16923, "incVat": 19969 },
+        { "size": "185/70R13", "pattern": "E-LOGIC FERENTINO TL 86 T", "exVat": 20676, "incVat": 24397 },
+        { "size": "155/65R14", "pattern": "E-LOGIC FERENTINO TL 75 T", "exVat": 16465, "incVat": 19429 },
+        { "size": "165/55R14", "pattern": "E-LOGIC FERENTINO TL 72 T", "exVat": 17298, "incVat": 20412 },
+        { "size": "165/60R14", "pattern": "E-LOGIC FERENTINO TL 75 H", "exVat": 16465, "incVat": 19429 },
+        { "size": "165/65R14", "pattern": "E-LOGIC FERENTINO TL 79 T", "exVat": 18296, "incVat": 21589 },
+        { "size": "175/65R14", "pattern": "E-LOGIC FERENTINO TL 84 T", "exVat": 18296, "incVat": 21589 },
+        { "size": "165/70R14", "pattern": "E-LOGIC FERENTINO TL 85 T", "exVat": 16465, "incVat": 19429 },
+        { "size": "175/70R14", "pattern": "E-LOGIC FERENTINO TL 88 T", "exVat": 18845, "incVat": 22237 },
+        { "size": "185/70R14", "pattern": "E-LOGIC FERENTINO TL 88 H", "exVat": 20767, "incVat": 24505 },
+        { "size": "165/55R15", "pattern": "E-LOGIC FERENTINO TL 75 T", "exVat": 17298, "incVat": 20412 }
+      ]
+    },
+    {
+      "groupLabel": "PANTERA / DURATASPORTZ",
+      "items": [
+        { "size": "215/75R15", "pattern": "PANTERA AT FERENTINO TL 100T", "exVat": 31896, "incVat": 37637 },
+        { "size": "235/75R15", "pattern": "PANTERA AT FERENTINO 105T", "exVat": 37518, "incVat": 44271 },
+        { "size": "265/65R17", "pattern": "PANTERA A/T FERENTINO TL 112 T", "exVat": 41900, "incVat": 49442 },
+        { "size": "31x10.5R15", "pattern": "PANTERA AT FERENTINO TL 109S", "exVat": 41122, "incVat": 48524 },
+        { "size": "265/70R16", "pattern": "DURATASPORTZ AT FERENTINO TL 1", "exVat": 41035, "incVat": 48422 }
+      ]
+    }
+  ]
+}

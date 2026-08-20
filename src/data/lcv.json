@@ -1,0 +1,19 @@
+{
+  "label": "Light Commercial (LCV)",
+  "description": "E-COMM DT1 radial tyres for vans and light commercial vehicles.",
+  "groups": [
+    {
+      "groupLabel": "E-COMM DT1",
+      "items": [
+        { "size": "145R12", "pattern": "E-COMM DT1 FERENTINO TL C 86/84 R", "exVat": 14635, "incVat": 17269 },
+        { "size": "155R12", "pattern": "E-COMM DT1 FERENTINO TL C 88/86 R", "exVat": 15550, "incVat": 18349 },
+        { "size": "155R13", "pattern": "E-COMM DT1 FERENTINO TL C 91/89 R", "exVat": 17381, "incVat": 20509 },
+        { "size": "165R13", "pattern": "E-COMM DT1 FERENTINO TL C 94/92 R", "exVat": 18296, "incVat": 21589 },
+        { "size": "165R14", "pattern": "E-COMM DT1 FERENTINO TL C 97/95 R", "exVat": 22872, "incVat": 26989 },
+        { "size": "185R14", "pattern": "E-COMM DT1 FERENTINO TL C 102/100 R", "exVat": 24703, "incVat": 29149 },
+        { "size": "195R14", "pattern": "E-COMM DT1 FERENTINO TL C 106/104 S", "exVat": 27448, "incVat": 32389 },
+        { "size": "195R15", "pattern": "E-COMM DT1 FERENTINO TL C 106/104 R", "exVat": 28821, "incVat": 34009 }
+      ]
+    }
+  ]
+}

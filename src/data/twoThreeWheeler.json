@@ -1,0 +1,69 @@
+{
+  "label": "Two & Three Wheeler",
+  "description": "Motorcycle, scooter and three wheeler tyres.",
+  "groups": [
+    {
+      "groupLabel": "MOTOR CYCLE (Tube Type)",
+      "items": [
+        { "size": "2.50-16", "pattern": "SPINTA F FERENTINO TT F", "exVat": 4941, "incVat": 5830 },
+        { "size": "2.50-16", "pattern": "FIATO D FERENTINO TT R", "exVat": 4941, "incVat": 5830 },
+        { "size": "2.50-17", "pattern": "FIATO R FERENTINO TT R", "exVat": 5212, "incVat": 6150 },
+        { "size": "2.50-17", "pattern": "SPINTA F FERENTINO TT F", "exVat": 5119, "incVat": 6040 },
+        { "size": "2.75-17", "pattern": "IMPREZA F 1 FERENTINO TT F 4PR", "exVat": 7136, "incVat": 8420 },
+        { "size": "3.00-17", "pattern": "IMPREZA R FERENTINO TT R 6PR", "exVat": 7593, "incVat": 8960 },
+        { "size": "2.75-18", "pattern": "IMPREZA F 2 FERENTINO TT F", "exVat": 6585, "incVat": 7770 },
+        { "size": "3.00-18", "pattern": "TYROX DRX FERENTINO TT R", "exVat": 7771, "incVat": 9170 }
+      ]
+    },
+    {
+      "groupLabel": "SCOOTER",
+      "items": [
+        { "size": "3.00-10", "pattern": "SPEEDO DX FERENTINO TT", "exVat": 4754, "incVat": 5610 },
+        { "size": "3.50-10", "pattern": "SPEEDO DX FERENTINO TT", "exVat": 5941, "incVat": 7010 },
+        { "size": "90/100-10", "pattern": "AVANZATO D FERENTINO TL D 53J", "exVat": 6034, "incVat": 7120 },
+        { "size": "90/100-10", "pattern": "IMPREZA D FERENTINO TL D", "exVat": 6034, "incVat": 7120 },
+        { "size": "90/100-10", "pattern": "TYROX DGX FERENTINO TL", "exVat": 6034, "incVat": 7120 },
+        { "size": "100/90-10", "pattern": "SPEEDO DX FERENTINO TL", "exVat": 5941, "incVat": 7010 },
+        { "size": "90/90-12", "pattern": "VELOZITA DTX FERENTINO TL", "exVat": 6127, "incVat": 7230 },
+        { "size": "100/80-12", "pattern": "VELOZITA GX FERENTINO TL F", "exVat": 6856, "incVat": 8090 },
+        { "size": "100/80-12", "pattern": "IMPREZA FX FERENTINO TL F", "exVat": 6678, "incVat": 7880 },
+        { "size": "110/80-12", "pattern": "VELOZITA GX FERENTINO TL R", "exVat": 8229, "incVat": 9710 },
+        { "size": "110/80-12", "pattern": "IMPREZA NRS FERENTINO TL R", "exVat": 7958, "incVat": 9390 }
+      ]
+    },
+    {
+      "groupLabel": "THREE WHEELER",
+      "items": [
+        { "size": "4.00-08", "pattern": "STUNNER ST FERENTINO TT 6PR", "exVat": 6398, "incVat": 7550 },
+        { "size": "4.00-08", "pattern": "STUNNER LITE FERENTINO TT 6PR", "exVat": 6398, "incVat": 7550 },
+        { "size": "4.00-08", "pattern": "STUNNER XT FERENTINO TL 6PR", "exVat": 6678, "incVat": 7880 },
+        { "size": "4.50-10", "pattern": "ENDURA ST FERENTINO TT 8PR", "exVat": 10246, "incVat": 12090 },
+        { "size": "4.50-10", "pattern": "ENDURA ST FERENTINO TL 8PR", "exVat": 11322, "incVat": 13360 }
+      ]
+    },
+    {
+      "groupLabel": "MOTOR CYCLE (Tubeless)",
+      "items": [
+        { "size": "120/80-16", "pattern": "SPEEDO DX FERENTINO TL R", "exVat": 12347, "incVat": 14570 },
+        { "size": "2.75-17", "pattern": "IMPREZA F 2 FERENTINO TL F", "exVat": 6856, "incVat": 8090 },
+        { "size": "3.00-17", "pattern": "IMPREZA R FERENTINO TL R", "exVat": 8686, "incVat": 10250 },
+        { "size": "3.00-17", "pattern": "TYROX DRX FERENTINO TL R", "exVat": 8686, "incVat": 10250 },
+        { "size": "80/100-17", "pattern": "VELOZITA XF2 FERENTINO TL F", "exVat": 8229, "incVat": 9710 },
+        { "size": "90/90-17", "pattern": "VELOZITA XF2 FERENTINO TL F", "exVat": 10059, "incVat": 11870 },
+        { "size": "100/80-17", "pattern": "VELOZITA XF1 FERENTINO TL F", "exVat": 10975, "incVat": 12950 },
+        { "size": "110/80-17", "pattern": "VELOZITA XF1 FERENTINO TL", "exVat": 10059, "incVat": 11870 },
+        { "size": "100/90-17", "pattern": "TYROX DTX FERENTINO TL R", "exVat": 9602, "incVat": 11330 },
+        { "size": "100/90-17", "pattern": "IMPREZA R FERENTINO TL R", "exVat": 9602, "incVat": 11330 },
+        { "size": "120/80-17", "pattern": "VELOZITA VRX FERENTINO TL R", "exVat": 11890, "incVat": 14030 },
+        { "size": "130/70-17", "pattern": "VELOZITA VRX FERENTINO TL R", "exVat": 12805, "incVat": 15110 },
+        { "size": "140/60R17", "pattern": "VELOZITA PLUS FERENTINO 63P", "exVat": 13720, "incVat": 16190 },
+        { "size": "140/70-17", "pattern": "VELOZITA VRX FERENTINO TL R", "exVat": 15093, "incVat": 17810 },
+        { "size": "140/70-17", "pattern": "VELOZITA DGX FERENTINO TL R", "exVat": 14178, "incVat": 16730 },
+        { "size": "2.75-18", "pattern": "IMPREZA F 2 FERENTINO TL F", "exVat": 6771, "incVat": 7990 },
+        { "size": "80/100-18", "pattern": "AVANZATO XF2 FERENTINO TL F", "exVat": 9144, "incVat": 10790 },
+        { "size": "3.00-18", "pattern": "IMPREZA R FERENTINO TL R", "exVat": 8229, "incVat": 9710 },
+        { "size": "100/90-18", "pattern": "TYROX DTX FERENTINO TL R", "exVat": 9881, "incVat": 11660 }
+      ]
+    }
+  ]
+}

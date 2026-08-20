@@ -1,0 +1,33 @@
+{
+  "label": "Truck / Light Truck",
+  "description": "AGRI, LTB and TBB tyres — ENDURA and LOADER ranges for trucks and light trucks.",
+  "groups": [
+    {
+      "groupLabel": "TBB",
+      "items": [
+        { "size": "6.00-16", "pattern": "TF RUNNER FERENTINO 8PR TT", "exVat": 24154, "incVat": 28501 },
+        { "size": "7.00-15", "pattern": "ENDURA ECO FERENTINO TT 10PR", "exVat": 35228, "incVat": 41569 },
+        { "size": "7.00-15", "pattern": "ENDURA ECO FERENTINO TL 12PR (TUBELESS)", "exVat": 37000, "incVat": 43660 },
+        { "size": "7.00-15", "pattern": "ENDURA ECO FERENTINO TT 12PR", "exVat": 35503, "incVat": 41893 },
+        { "size": "7.00-16", "pattern": "ENDURA ECO FERENTINO TT 10PR", "exVat": 36601, "incVat": 43189 },
+        { "size": "7.00-16", "pattern": "ENDURA PRO FERENTINO TT 12PR", "exVat": 42093, "incVat": 49669 },
+        { "size": "7.00-16", "pattern": "ENDURA ECO FERENTINO TT 12PR", "exVat": 36326, "incVat": 42865 },
+        { "size": "7.50-16", "pattern": "ENDURA ECO FERENTINO TT 14PR", "exVat": 41635, "incVat": 49129 },
+        { "size": "7.50-16", "pattern": "ENDURA ECO FERENTINO TT 16PR", "exVat": 44289, "incVat": 52261 },
+        { "size": "7.50-16", "pattern": "ENDURA PRO FERENTINO TT 16PR", "exVat": 47035, "incVat": 55501 },
+        { "size": "7.50-16", "pattern": "LOADER PRO FERENTINO TT 16PR", "exVat": 46669, "incVat": 55069 },
+        { "size": "8.25-16", "pattern": "ENDURA PRO FERENTINO TT 16PR", "exVat": 65065, "incVat": 76777 },
+        { "size": "8.25-20", "pattern": "ENDURA PRO FERENTINO TT 14PR", "exVat": 63509, "incVat": 74941 },
+        { "size": "8.25-20", "pattern": "ENDURA PRO FERENTINO TT 16PR", "exVat": 65500, "incVat": 77290 },
+        { "size": "9.00-20", "pattern": "ENDURA PRO FERENTINO TT 16PR", "exVat": 85659, "incVat": 101077 },
+        { "size": "9.00-20", "pattern": "ENDURA ECO FERENTINO TT 16PR", "exVat": 77238, "incVat": 91141 },
+        { "size": "9.00-20", "pattern": "ENDURA ECO FERENTINO TT 16PR BUS U", "exVat": 74950, "incVat": 88441 },
+        { "size": "10.00-20", "pattern": "ENDURA ECO FERENTINO TT 16PR", "exVat": 89503, "incVat": 105613 },
+        { "size": "10.00-20", "pattern": "ENDURA PRO FERENTINO TT 18PR", "exVat": 98655, "incVat": 116413 },
+        { "size": "10.00-20", "pattern": "ENDURA ECO FERENTINO TT 18PR", "exVat": 90235, "incVat": 106477 },
+        { "size": "10.00-20", "pattern": "LOADER PLUS FERENTINO TT 18PR", "exVat": 97403, "incVat": 114935 },
+        { "size": "10.00-20", "pattern": "ENDURA PRO DIAMOND FERENTINO TT - FULL KIT", "exVat": 105163, "incVat": 124092 }
+      ]
+    }
+  ]
+}
