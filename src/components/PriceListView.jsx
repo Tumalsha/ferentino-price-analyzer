@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import Sidebar from './Sidebar.jsx';
 import SubTabs from './SubTabs.jsx';
 import Toolbar from './Toolbar.jsx';
@@ -9,10 +10,16 @@ import { usePriceStore } from '../store/usePriceStore.js';
 export default function PriceListView({ editable }) {
   const { getMergedCategories, setField } = usePriceStore();
   const categories = getMergedCategories();
+  const [searchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category');
+  const initialGroup = Number(searchParams.get('group'));
+  const initialQuery = searchParams.get('query') ?? '';
 
-  const [activeId, setActiveId] = useState(categories[0].id);
-  const [activeGroupIndex, setActiveGroupIndex] = useState(0);
-  const [query, setQuery] = useState('');
+  const [activeId, setActiveId] = useState(
+    categories.some((category) => category.id === initialCategory) ? initialCategory : categories[0].id
+  );
+  const [activeGroupIndex, setActiveGroupIndex] = useState(Number.isInteger(initialGroup) ? initialGroup : 0);
+  const [query, setQuery] = useState(initialQuery);
   const [vatMode, setVatMode] = useState('both');
   const [sortKey, setSortKey] = useState(null);
   const [sortDir, setSortDir] = useState('asc');

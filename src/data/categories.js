@@ -11,9 +11,15 @@ import twoThreeWheeler from './twoThreeWheeler.json';
 // explicitly wanted — it does not turn on automatically just because a
 // category happens to have more than one group.
 export const categories = [
-  { id: 'passenger-car-radial', icon: 'car', data: passengerCarRadial, subTabs: true },
-  { id: 'eternopresa', icon: 'tire', data: eternopresa },
-  { id: 'celestra', icon: 'circle', data: celestra },
+  {
+    id: 'passenger-car-radial',
+    icon: 'car',
+    data: {
+      ...passengerCarRadial,
+      groups: [...passengerCarRadial.groups, ...eternopresa.groups, ...celestra.groups],
+    },
+    subTabs: true,
+  },
   { id: 'lcv', icon: 'truck-small', data: lcv },
   { id: 'truck-light-truck', icon: 'truck', data: truckLightTruck },
   { id: 'two-three-wheeler', icon: 'bike', data: twoThreeWheeler, subTabs: true },

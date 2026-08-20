@@ -19,9 +19,11 @@ export default function Header() {
   return (
     <header className="bg-brand-red text-white flex items-center justify-between px-6 py-4">
       <div className="flex items-center gap-3">
-        <div className="w-10 h-10 bg-white text-brand-red font-bold rounded-md flex items-center justify-center text-lg">
-          F
-        </div>
+        <img
+  src="/ferentino-logo.png"
+  alt="Ferentino Tyre Corporation logo"
+  className="w-10 h-10 rounded-md object-contain bg-white"
+/>
         <div>
           <h1 className="font-bold text-lg leading-tight">FERENTINO — Retail Price List</h1>
           <p className="text-xs text-white/80 leading-tight">Horana-Ferentino Tyre Corporation (Pvt) Ltd.</p>
@@ -30,7 +32,10 @@ export default function Header() {
 
       <nav className="flex items-center gap-1 bg-white/10 rounded-lg p-1">
         <NavLink to="/" end className={navClass}>
-          View
+          Dashboard
+        </NavLink>
+        <NavLink to="/prices" className={navClass}>
+          Price List
         </NavLink>
         <NavLink to="/admin" className={navClass}>
           Admin

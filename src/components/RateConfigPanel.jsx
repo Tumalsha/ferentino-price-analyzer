@@ -1,11 +1,12 @@
-import { useLandingPriceStore } from '../store/useLandingPriceStore.js';
 import { DEFAULT_RATE_CONFIG } from '../data/landingPriceDefaults.js';
 
-export default function RateConfigPanel({ categoryId }) {
-  const { getRateConfig, setStepRate, setFocRatio } = useLandingPriceStore();
-
+export default function RateConfigPanel({ categoryId, getRateConfig, setStepRate, setFocRatio }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+    <div className="mb-4">
+      <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+        Default Rates — applies to all tyres in this category unless overridden per tyre (▼ button on each row)
+      </p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
       {Object.keys(DEFAULT_RATE_CONFIG).map((brand) => {
         const config = getRateConfig(categoryId, brand);
         return (
@@ -40,6 +41,7 @@ export default function RateConfigPanel({ categoryId }) {
           </div>
         );
       })}
+      </div>
     </div>
   );
 }
