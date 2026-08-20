@@ -1,7 +1,9 @@
 import { useMemo, useState } from 'react';
 import Sidebar from './Sidebar.jsx';
+import SubTabs from './SubTabs.jsx';
 import Toolbar from './Toolbar.jsx';
-import PriceTable from './PriceTable.jsx';
+import FlatPriceTable from './FlatPriceTable.jsx';
+import GroupedPriceTable from './GroupedPriceTable.jsx';
 import { usePriceStore } from '../store/usePriceStore.js';
 
 export default function PriceListView({ editable }) {
@@ -9,6 +11,7 @@ export default function PriceListView({ editable }) {
   const categories = getMergedCategories();
 
   const [activeId, setActiveId] = useState(categories[0].id);
+  const [activeGroupIndex, setActiveGroupIndex] = useState(0);
   const [query, setQuery] = useState('');
   const [vatMode, setVatMode] = useState('both');
   const [sortKey, setSortKey] = useState(null);
@@ -16,9 +19,13 @@ export default function PriceListView({ editable }) {
   const [compareMode, setCompareMode] = useState(false);
 
   const active = categories.find((c) => c.id === activeId);
+  const groups = active.data.groups;
+  const useSubTabs = active.subTabs === true;
+  const activeGroup = groups[activeGroupIndex] ?? groups[0];
 
-  const handleSelect = (id) => {
+  const handleSelectCategory = (id) => {
     setActiveId(id);
+    setActiveGroupIndex(0);
     setQuery('');
   };
 
@@ -31,10 +38,20 @@ export default function PriceListView({ editable }) {
     }
   };
 
+  // Sub-tab mode searches only the active group's items.
+  const filteredGroupItems = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return activeGroup.items;
+    return activeGroup.items.filter(
+      (item) => item.size.toLowerCase().includes(q) || item.pattern.toLowerCase().includes(q)
+    );
+  }, [activeGroup, query]);
+
+  // Grouped-table mode searches across all of the category's groups.
   const filteredGroups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return active.data.groups;
-    return active.data.groups
+    if (!q) return groups;
+    return groups
       .map((g) => ({
         ...g,
         items: g.items.filter(
@@ -42,13 +59,15 @@ export default function PriceListView({ editable }) {
         ),
       }))
       .filter((g) => g.items.length > 0);
-  }, [active, query]);
+  }, [groups, query]);
 
-  const totalCount = filteredGroups.reduce((sum, g) => sum + g.items.length, 0);
+  const totalCount = useSubTabs
+    ? filteredGroupItems.length
+    : filteredGroups.reduce((sum, g) => sum + g.items.length, 0);
 
   return (
     <div className="flex flex-1">
-      <Sidebar categories={categories} activeId={activeId} onSelect={handleSelect} />
+      <Sidebar categories={categories} activeId={activeId} onSelect={handleSelectCategory} />
       <main className="flex-1 p-6">
         <div className="flex items-center gap-3 mb-1">
           <h2 className="text-2xl font-bold">{active.data.label}</h2>
@@ -59,6 +78,8 @@ export default function PriceListView({ editable }) {
           )}
         </div>
         <p className="text-sm text-blue-700 mb-4">{active.data.description}</p>
+
+        {useSubTabs && <SubTabs groups={groups} activeIndex={activeGroupIndex} onSelect={setActiveGroupIndex} />}
 
         <Toolbar
           query={query}
@@ -74,16 +95,29 @@ export default function PriceListView({ editable }) {
           {editable && ' — click any cell to edit'}
         </p>
 
-        <PriceTable
-          groups={filteredGroups}
-          vatMode={vatMode}
-          sortKey={sortKey}
-          sortDir={sortDir}
-          onSort={handleSort}
-          compareMode={compareMode}
-          editable={editable}
-          onFieldChange={setField}
-        />
+        {useSubTabs ? (
+          <FlatPriceTable
+            items={filteredGroupItems}
+            vatMode={vatMode}
+            sortKey={sortKey}
+            sortDir={sortDir}
+            onSort={handleSort}
+            compareMode={compareMode}
+            editable={editable}
+            onFieldChange={setField}
+          />
+        ) : (
+          <GroupedPriceTable
+            groups={filteredGroups}
+            vatMode={vatMode}
+            sortKey={sortKey}
+            sortDir={sortDir}
+            onSort={handleSort}
+            compareMode={compareMode}
+            editable={editable}
+            onFieldChange={setField}
+          />
+        )}
       </main>
     </div>
   );

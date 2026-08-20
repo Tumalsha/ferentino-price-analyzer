@@ -36,6 +36,11 @@ export default function Header() {
           Admin
         </NavLink>
         {isAuthenticated && (
+          <NavLink to="/admin/landing-price" className={navClass}>
+            Landing Price
+          </NavLink>
+        )}
+        {isAuthenticated && (
           <button
             onClick={handleLogout}
             className="flex items-center gap-1 px-3 py-1.5 rounded-md text-sm font-medium text-white/85 hover:bg-white/15 transition-colors"

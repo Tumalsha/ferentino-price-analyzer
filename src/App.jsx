@@ -5,6 +5,7 @@ import Footer from './components/Footer.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import ViewPage from './pages/ViewPage.jsx';
 import AdminPage from './pages/AdminPage.jsx';
+import AdminLandingPricePage from './pages/AdminLandingPricePage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 
 export default function App() {
@@ -20,6 +21,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <AdminPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/landing-price"
+            element={
+              <ProtectedRoute>
+                <AdminLandingPricePage />
               </ProtectedRoute>
             }
           />

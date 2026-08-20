@@ -16,7 +16,7 @@ export default function PriceTable({
   const showEx = vatMode === 'both' || vatMode === 'exVat';
   const showInc = vatMode === 'both' || vatMode === 'incVat';
 
-  const baseCols = 3 + (showEx ? 1 : 0) + (showInc ? 1 : 0); // size, pattern, discount + vat cols
+  const baseCols = 2 + (showEx ? 1 : 0) + (showInc ? 1 : 0); // size, pattern + vat cols
   const totalCols = baseCols + (compareMode ? COMPETITOR_BRANDS.length : 0);
 
   const sortRows = (items) => {
@@ -47,7 +47,6 @@ export default function PriceTable({
             <th className="text-left px-4 py-3"><SortHeader label="Tread Pattern" sortField="pattern" /></th>
             {showEx && <th className="text-right px-4 py-3">Price Without VAT</th>}
             {showInc && <th className="text-right px-4 py-3">Price With VAT</th>}
-            <th className="text-right px-4 py-3">Discount</th>
             {compareMode &&
               COMPETITOR_BRANDS.map((brand) => (
                 <th key={brand} className="text-right px-3 py-3">{brand}</th>
@@ -93,14 +92,6 @@ export default function PriceTable({
                         />
                       </td>
                     )}
-                    <td className="px-1 py-1">
-                      <EditableCell
-                        value={row.discount}
-                        type="text"
-                        editable={editable}
-                        onChange={(v) => onFieldChange(row.rowKey, 'discount', v)}
-                      />
-                    </td>
                     {compareMode &&
                       COMPETITOR_BRANDS.map((brand) => (
                         <td key={brand} className="px-1 py-1">

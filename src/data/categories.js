@@ -6,11 +6,15 @@ import truckLightTruck from './truckLightTruck.json';
 import twoThreeWheeler from './twoThreeWheeler.json';
 
 // Add a new category by adding one entry here + one JSON file in /data.
+// `subTabs: true` renders each group as a clickable sub-tab instead of a
+// single table with inline group-header rows. Only set this where it's
+// explicitly wanted — it does not turn on automatically just because a
+// category happens to have more than one group.
 export const categories = [
-  { id: 'passenger-car-radial', icon: 'car', data: passengerCarRadial },
+  { id: 'passenger-car-radial', icon: 'car', data: passengerCarRadial, subTabs: true },
   { id: 'eternopresa', icon: 'tire', data: eternopresa },
   { id: 'celestra', icon: 'circle', data: celestra },
   { id: 'lcv', icon: 'truck-small', data: lcv },
   { id: 'truck-light-truck', icon: 'truck', data: truckLightTruck },
-  { id: 'two-three-wheeler', icon: 'bike', data: twoThreeWheeler },
+  { id: 'two-three-wheeler', icon: 'bike', data: twoThreeWheeler, subTabs: true },
 ];
