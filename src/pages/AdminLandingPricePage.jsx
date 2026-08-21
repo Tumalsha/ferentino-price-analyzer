@@ -3,17 +3,14 @@ import Sidebar from '../components/Sidebar.jsx';
 import SubTabs from '../components/SubTabs.jsx';
 import RateConfigPanel from '../components/RateConfigPanel.jsx';
 import LandingPriceTable from '../components/LandingPriceTable.jsx';
-import { categories as baseCategories } from '../data/categories.js';
 import { useLandingPriceStore } from '../store/useLandingPriceStore.js';
 import { usePriceStore } from '../store/usePriceStore.js';
 import { computeLanding } from '../utils/landingPrice.js';
 
 export default function AdminLandingPricePage() {
-  const [activeId, setActiveId] = useState(baseCategories[0].id);
+  const { baseCategories, setField, isLoading } = usePriceStore();
+  const [activeId, setActiveId] = useState(null);
   const [activeGroupIndex, setActiveGroupIndex] = useState(0);
-  const active = baseCategories.find((c) => c.id === activeId);
-  const useSubTabs = active.subTabs === true;
-  const groups = active.data.groups;
 
   const {
     getRateConfig, setStepRate, setFocRatio,
@@ -22,7 +19,20 @@ export default function AdminLandingPricePage() {
     dealerPrices, rateOverrides, rowRateOverrides,
   } = useLandingPriceStore();
 
-  const { setField } = usePriceStore();
+  useEffect(() => {
+    if (baseCategories.length > 0 && !baseCategories.some((category) => category.id === activeId)) {
+      setActiveId(baseCategories[0].id);
+      setActiveGroupIndex(0);
+    }
+  }, [activeId, baseCategories]);
+
+  if (isLoading || baseCategories.length === 0) {
+    return <main className="flex-1 p-6">Loading price data...</main>;
+  }
+
+  const active = baseCategories.find((c) => c.id === activeId) ?? baseCategories[0];
+  const useSubTabs = active.subTabs === true;
+  const groups = active.data.groups;
 
   // ── Sync FTC landing → "FTC" compare-price column ──────────────────────────
   // Runs whenever any dealer price or any rate config changes, and covers every
@@ -56,7 +66,7 @@ export default function AdminLandingPricePage() {
       });
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dealerPrices, rateOverrides, rowRateOverrides]);
+  }, [baseCategories, dealerPrices, rateOverrides, rowRateOverrides]);
 
   const withRowKey = (item) => ({ ...item, rowKey: `${active.id}|${item.size}|${item.pattern}` });
 

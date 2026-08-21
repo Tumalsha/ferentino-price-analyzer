@@ -8,7 +8,7 @@ import GroupedPriceTable from './GroupedPriceTable.jsx';
 import { usePriceStore } from '../store/usePriceStore.js';
 
 export default function PriceListView({ editable }) {
-  const { getMergedCategories, setField } = usePriceStore();
+  const { getMergedCategories, setField, isLoading } = usePriceStore();
   const categories = getMergedCategories();
   const [searchParams] = useSearchParams();
   const initialCategory = searchParams.get('category');
@@ -16,7 +16,7 @@ export default function PriceListView({ editable }) {
   const initialQuery = searchParams.get('query') ?? '';
 
   const [activeId, setActiveId] = useState(
-    categories.some((category) => category.id === initialCategory) ? initialCategory : categories[0].id
+    categories.some((category) => category.id === initialCategory) ? initialCategory : categories[0]?.id ?? null
   );
   const [activeGroupIndex, setActiveGroupIndex] = useState(Number.isInteger(initialGroup) ? initialGroup : 0);
   const [query, setQuery] = useState(initialQuery);
@@ -25,9 +25,9 @@ export default function PriceListView({ editable }) {
   const [sortDir, setSortDir] = useState('asc');
   const [compareMode, setCompareMode] = useState(false);
 
-  const active = categories.find((c) => c.id === activeId);
-  const groups = active.data.groups;
-  const useSubTabs = active.subTabs === true;
+  const active = categories.find((c) => c.id === activeId) ?? categories[0];
+  const groups = active?.data.groups ?? [];
+  const useSubTabs = active?.subTabs === true;
   const activeGroup = groups[activeGroupIndex] ?? groups[0];
 
   const handleSelectCategory = (id) => {
@@ -48,8 +48,8 @@ export default function PriceListView({ editable }) {
   // Sub-tab mode searches only the active group's items.
   const filteredGroupItems = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return activeGroup.items;
-    return activeGroup.items.filter(
+    if (!q) return activeGroup?.items ?? [];
+    return (activeGroup?.items ?? []).filter(
       (item) => item.size.toLowerCase().includes(q) || item.pattern.toLowerCase().includes(q)
     );
   }, [activeGroup, query]);
@@ -67,6 +67,10 @@ export default function PriceListView({ editable }) {
       }))
       .filter((g) => g.items.length > 0);
   }, [groups, query]);
+
+  if (isLoading || categories.length === 0) {
+    return <main className="flex-1 p-6">Loading price data...</main>;
+  }
 
   const totalCount = useSubTabs
     ? filteredGroupItems.length

@@ -13,12 +13,13 @@ export default function LoginPage() {
 
   const redirectTo = location.state?.from?.pathname ?? '/admin';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (login(username, password)) {
+    const result = await login(username, password);
+    if (result.success) {
       navigate(redirectTo, { replace: true });
     } else {
-      setError('Incorrect username or password.');
+      setError(result.error);
     }
   };
 

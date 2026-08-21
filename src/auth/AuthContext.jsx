@@ -1,23 +1,36 @@
 import { createContext, useContext, useState } from 'react';
-import { ADMIN_USERNAME, ADMIN_PASSWORD } from './credentials.js';
 
 const SESSION_KEY = 'ferentino-admin-session';
+const TOKEN_KEY = 'ferentino-admin-token';
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(() => sessionStorage.getItem(SESSION_KEY) === 'true');
+  const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem(TOKEN_KEY)));
 
-  const login = (username, password) => {
-    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+  const login = async (username, password) => {
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok) return { success: false, error: result.error || `Login failed (${response.status})` };
+      const { token } = result;
+      if (!token) return { success: false, error: 'Login response did not include a token.' };
+      sessionStorage.setItem(TOKEN_KEY, token);
       sessionStorage.setItem(SESSION_KEY, 'true');
       setIsAuthenticated(true);
-      return true;
+      return { success: true };
+    } catch {
+      return { success: false, error: 'Unable to connect to the authentication server.' };
     }
-    return false;
   };
 
   const logout = () => {
     sessionStorage.removeItem(SESSION_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     setIsAuthenticated(false);
   };
 

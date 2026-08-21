@@ -1,9 +1,20 @@
 import { createContext, useCallback, useContext, useEffect, useState, createElement } from 'react';
-import { categories as baseCategories } from '../data/categories.js';
 
 const STORAGE_KEY = 'ferentino-price-overrides';
 export const COMPETITOR_BRANDS = ['FTC', 'CEAT', 'DSI', 'MRF'];
 const NUMERIC_FIELDS = ['exVat', 'incVat', ...COMPETITOR_BRANDS];
+
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const TOKEN_KEY = 'ferentino-admin-token';
+
+// Metadata that isn't stored in MongoDB (UI-only concerns).
+// The "label" here must exactly match the "category" field on each Tyre document.
+const CATEGORY_META = [
+  { labels: ['Passenger Car Radial', 'Eternopresa', 'Celestra'], id: 'passenger-car-radial', icon: 'car', subTabs: true },
+  { labels: ['Light Commercial (LCV)'], id: 'lcv', icon: 'truck-small', subTabs: false },
+  { labels: ['Truck / Light Truck'], id: 'truck-light-truck', icon: 'truck', subTabs: false },
+  { labels: ['Two & Three Wheeler'], id: 'two-three-wheeler', icon: 'bike', subTabs: true },
+];
 
 function rowKey(categoryId, size, pattern) {
   return `${categoryId}|${size}|${pattern}`;
@@ -18,32 +29,108 @@ function loadOverrides() {
   }
 }
 
+// Converts a flat array of tyre documents from the API into the
+// { id, icon, subTabs, data: { label, groups: [{ groupLabel, items }] } } shape
+// the rest of the app expects.
+function buildCategoriesFromTyres(tyres) {
+  return CATEGORY_META.map((meta) => {
+        const tyresInCategory = tyres.filter((t) => meta.labels.includes(t.category));
+
+    const groupsMap = {};
+    for (const tyre of tyresInCategory) {
+      if (!groupsMap[tyre.groupLabel]) {
+        groupsMap[tyre.groupLabel] = [];
+      }
+      groupsMap[tyre.groupLabel].push({
+        size: tyre.size,
+        pattern: tyre.pattern,
+        exVat: tyre.exVat,
+        incVat: tyre.incVat,
+      });
+    }
+
+    const groups = Object.keys(groupsMap).map((groupLabel) => ({
+      groupLabel,
+      items: groupsMap[groupLabel],
+    }));
+
+    return {
+      id: meta.id,
+      icon: meta.icon,
+      subTabs: meta.subTabs,
+      data: {
+        label: meta.labels[0],
+        groups,
+      },
+    };
+  });
+}
+
 // ── Context ────────────────────────────────────────────────────────────────────
 const PriceStoreContext = createContext(null);
 
-/**
- * Wrap the app once in <PriceStoreProvider> so every page (View AND Admin)
- * shares the same in-memory state. Without this, each page would hold its own
- * useState copy and edits made on Admin wouldn't reflect on View until reload.
- */
 export function PriceStoreProvider({ children }) {
   const [overrides, setOverrides] = useState(loadOverrides);
+  const [baseCategories, setBaseCategories] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(overrides));
   }, [overrides]);
 
-  const setField = useCallback((key, field, value) => {
-    setOverrides((prev) => ({
-      ...prev,
-      [key]: {
-        ...prev[key],
-        [field]: value === '' || value === null ? null : NUMERIC_FIELDS.includes(field) ? Number(value) : value,
-      },
-    }));
+  useEffect(() => {
+    Promise.all([
+      fetch(`${API_URL}/api/tyres`),
+      fetch(`${API_URL}/api/price-overrides`),
+    ])
+      .then(async ([tyresResponse, overridesResponse]) => {
+        if (!tyresResponse.ok || !overridesResponse.ok) throw new Error('Failed to load price data');
+        const [tyres, serverOverrides] = await Promise.all([tyresResponse.json(), overridesResponse.json()]);
+        const remote = Object.fromEntries(
+          serverOverrides.map(({ rowKey, exVat, incVat, discount, FTC, CEAT, DSI, MRF }) => [
+            rowKey,
+            { exVat, incVat, discount, FTC, CEAT, DSI, MRF },
+          ])
+        );
+        setOverrides(remote);
+        localStorage.removeItem(STORAGE_KEY);
+        setBaseCategories(buildCategoriesFromTyres(tyres));
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to load tyres from backend:', err);
+        setLoadError(err.message);
+        setIsLoading(false);
+      });
   }, []);
 
-  // Merges base (bundled) data with whatever the admin has edited.
+  const setField = useCallback((key, field, value) => {
+    const nextValue = value === '' || value === null ? null : NUMERIC_FIELDS.includes(field) ? Number(value) : value;
+    setOverrides((prev) => {
+      if (prev[key]?.[field] === nextValue) return prev;
+      return {
+        ...prev,
+        [key]: { ...prev[key], [field]: nextValue },
+      };
+    });
+    const token = sessionStorage.getItem(TOKEN_KEY);
+    const [categoryId, size, ...patternParts] = key.split('|');
+    if (token && categoryId && size && patternParts.length > 0) {
+      fetch(`${API_URL}/api/price-overrides/${encodeURIComponent(key)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          field,
+          value: nextValue,
+          categoryId,
+          size,
+          pattern: patternParts.join('|'),
+        }),
+      }).catch((err) => console.error('Failed to save price override:', err));
+    }
+  }, []);
+
   const getMergedCategories = useCallback(
     () =>
       baseCategories.map((cat) => ({
@@ -70,20 +157,16 @@ export function PriceStoreProvider({ children }) {
           })),
         },
       })),
-    [overrides]
+    [baseCategories, overrides]
   );
 
   return createElement(
     PriceStoreContext.Provider,
-    { value: { getMergedCategories, setField } },
+    { value: { baseCategories, getMergedCategories, setField, isLoading, loadError } },
     children
   );
 }
 
-/**
- * Drop-in replacement for the old usePriceStore() hook.
- * Components call this exactly as before — no other changes needed in them.
- */
 export function usePriceStore() {
   const ctx = useContext(PriceStoreContext);
   if (!ctx) throw new Error('usePriceStore must be used within PriceStoreProvider');
