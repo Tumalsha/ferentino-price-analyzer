@@ -1,10 +1,17 @@
 import { createContext, useCallback, useContext, useEffect, useState, createElement } from 'react';
+import { categories as localCategories } from '../data/categories.js';
 
 const STORAGE_KEY = 'ferentino-price-overrides';
 export const COMPETITOR_BRANDS = ['FTC', 'CEAT', 'DSI', 'MRF'];
 const NUMERIC_FIELDS = ['exVat', 'incVat', ...COMPETITOR_BRANDS];
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const API_URL = import.meta.env.DEV
+  ? configuredApiUrl || 'http://localhost:4000'
+  : configuredApiUrl && !/^https?:\/\/localhost(?::|\/|$)/i.test(configuredApiUrl)
+    ? configuredApiUrl.replace(/\/$/, '')
+    : '';
+  const API_ENABLED = import.meta.env.PROD || Boolean(API_URL);
 const TOKEN_KEY = 'ferentino-admin-token';
 
 // Metadata that isn't stored in MongoDB (UI-only concerns).
@@ -71,8 +78,8 @@ const PriceStoreContext = createContext(null);
 
 export function PriceStoreProvider({ children }) {
   const [overrides, setOverrides] = useState(loadOverrides);
-  const [baseCategories, setBaseCategories] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [baseCategories, setBaseCategories] = useState(localCategories);
+  const [isLoading, setIsLoading] = useState(API_ENABLED);
   const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
@@ -80,13 +87,24 @@ export function PriceStoreProvider({ children }) {
   }, [overrides]);
 
   useEffect(() => {
-    Promise.all([
-      fetch(`${API_URL}/api/tyres`),
-      fetch(`${API_URL}/api/price-overrides`),
-    ])
-      .then(async ([tyresResponse, overridesResponse]) => {
-        if (!tyresResponse.ok || !overridesResponse.ok) throw new Error('Failed to load price data');
-        const [tyres, serverOverrides] = await Promise.all([tyresResponse.json(), overridesResponse.json()]);
+    if (!API_ENABLED) return;
+
+    fetch(`${API_URL}/api/tyres`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Failed to load tyre data');
+        setBaseCategories(buildCategoriesFromTyres(await response.json()));
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error('Failed to load tyres from backend:', err);
+        setLoadError(err.message);
+        setIsLoading(false);
+      });
+
+    fetch(`${API_URL}/api/price-overrides`)
+      .then(async (response) => {
+        if (!response.ok) throw new Error('Failed to load price overrides');
+        const serverOverrides = await response.json();
         const remote = Object.fromEntries(
           serverOverrides.map(({ rowKey, exVat, incVat, discount, FTC, CEAT, DSI, MRF }) => [
             rowKey,
@@ -95,14 +113,8 @@ export function PriceStoreProvider({ children }) {
         );
         setOverrides(remote);
         localStorage.removeItem(STORAGE_KEY);
-        setBaseCategories(buildCategoriesFromTyres(tyres));
-        setIsLoading(false);
       })
-      .catch((err) => {
-        console.error('Failed to load tyres from backend:', err);
-        setLoadError(err.message);
-        setIsLoading(false);
-      });
+      .catch((err) => console.error('Failed to load price overrides:', err));
   }, []);
 
   const setField = useCallback((key, field, value) => {
@@ -116,7 +128,7 @@ export function PriceStoreProvider({ children }) {
     });
     const token = sessionStorage.getItem(TOKEN_KEY);
     const [categoryId, size, ...patternParts] = key.split('|');
-    if (token && categoryId && size && patternParts.length > 0) {
+    if (token && API_ENABLED && categoryId && size && patternParts.length > 0) {
       fetch(`${API_URL}/api/price-overrides/${encodeURIComponent(key)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },

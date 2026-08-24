@@ -5,7 +5,13 @@ import { useAuth } from '../auth/AuthContext.jsx';
 const RATES_KEY = 'ferentino-landing-rates';       // { "<categoryId>::<brand>": config }  — category defaults
 const ROW_RATES_KEY = 'ferentino-row-landing-rates'; // { "<rowKey>::<brand>": config }    — per-tyre overrides
 const DEALER_PRICES_KEY = 'ferentino-dealer-prices'; // { "<rowKey>": { ftcWithVat, CEAT, DSI, MRF } }
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const API_URL = import.meta.env.DEV
+  ? configuredApiUrl || 'http://localhost:4000'
+  : configuredApiUrl && !/^https?:\/\/localhost(?::|\/|$)/i.test(configuredApiUrl)
+    ? configuredApiUrl.replace(/\/$/, '')
+    : '';
+  const API_ENABLED = import.meta.env.PROD || Boolean(API_URL);
 const TOKEN_KEY = 'ferentino-admin-token';
 
 function load(key) {
@@ -24,7 +30,7 @@ export function useLandingPriceStore() {
   const [dealerPrices, setDealerPrices] = useState(() => load(DEALER_PRICES_KEY));
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (!isAuthenticated || !API_ENABLED) return;
     const token = sessionStorage.getItem(TOKEN_KEY);
     if (!token) return;
     const headers = { Authorization: `Bearer ${token}` };
@@ -69,7 +75,7 @@ export function useLandingPriceStore() {
       };
     });
     const token = sessionStorage.getItem(TOKEN_KEY);
-    if (token) {
+    if (token && API_ENABLED) {
       fetch(`${API_URL}/api/rate-configs/${categoryId}/${brand}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -85,7 +91,7 @@ export function useLandingPriceStore() {
       return { ...prev, [key]: { ...base, focRatio: value === '' ? null : Number(value) } };
     });
     const token = sessionStorage.getItem(TOKEN_KEY);
-    if (token) {
+    if (token && API_ENABLED) {
       fetch(`${API_URL}/api/rate-configs/${categoryId}/${brand}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
@@ -158,7 +164,7 @@ export function useLandingPriceStore() {
     }));
     const token = sessionStorage.getItem(TOKEN_KEY);
     const backendField = field === 'ftcWithVat' ? 'ftcExVat' : field;
-    if (token) {
+    if (token && API_ENABLED) {
       fetch(`${API_URL}/api/dealer-prices/${encodeURIComponent(rowKey)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },

@@ -77,11 +77,11 @@ export default function PriceListView({ editable }) {
     : filteredGroups.reduce((sum, g) => sum + g.items.length, 0);
 
   return (
-    <div className="flex flex-1">
+    <div className="flex min-w-0 flex-1 flex-col lg:flex-row">
       <Sidebar categories={categories} activeId={activeId} onSelect={handleSelectCategory} />
-      <main className="flex-1 p-6">
+      <main className="min-w-0 flex-1 p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-1">
-          <h2 className="text-2xl font-bold">{active.data.label}</h2>
+          <h2 className="text-xl font-bold sm:text-2xl">{active.data.label}</h2>
           {editable && (
             <span className="text-xs font-semibold uppercase bg-brand-red text-white px-2 py-1 rounded">
               Admin — editing

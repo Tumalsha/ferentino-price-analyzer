@@ -101,7 +101,7 @@ export default function LandingPriceTable({
 
   return (
     <div className="border border-gray-200 rounded-lg overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full min-w-[1180px] text-sm">
         <thead className="bg-brand-red text-white">
           <tr>
             <th rowSpan={2} className="text-left px-3 py-3 align-bottom w-6"></th>

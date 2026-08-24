@@ -1,8 +1,15 @@
 import { createContext, useContext, useState } from 'react';
+import { ADMIN_PASSWORD, ADMIN_USERNAME } from './credentials.js';
 
 const SESSION_KEY = 'ferentino-admin-session';
 const TOKEN_KEY = 'ferentino-admin-token';
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+const API_URL = import.meta.env.DEV
+  ? configuredApiUrl || 'http://localhost:4000'
+  : configuredApiUrl && !/^https?:\/\/localhost(?::|\/|$)/i.test(configuredApiUrl)
+    ? configuredApiUrl.replace(/\/$/, '')
+    : '';
+  const API_ENABLED = import.meta.env.PROD || Boolean(API_URL);
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
@@ -10,6 +17,15 @@ export function AuthProvider({ children }) {
 
   const login = async (username, password) => {
     try {
+      if (!API_ENABLED) {
+        if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+          return { success: false, error: 'Invalid username or password.' };
+        }
+        sessionStorage.setItem(TOKEN_KEY, 'local-admin-session');
+        sessionStorage.setItem(SESSION_KEY, 'true');
+        setIsAuthenticated(true);
+        return { success: true };
+      }
       const response = await fetch(`${API_URL}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

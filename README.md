@@ -6,6 +6,23 @@
 3. Then: `npm run dev`
 4. Open the local URL Vite prints (usually http://localhost:5173).
 
+## Deploying to Vercel
+The React frontend and Node API are deployed together. The API exposes
+`/api/auth/login`, `/api/tyres`, `/api/price-overrides`, `/api/rate-configs`,
+and `/api/dealer-prices`, with MongoDB as the persistent store.
+
+## Vercel and MongoDB setup
+1. Create a MongoDB Atlas database and allow Vercel traffic in its network access settings.
+2. In the Vercel project settings, add `MONGODB_URI`, `MONGODB_DB`, `ADMIN_USERNAME`,
+   and a strong `ADMIN_PASSWORD`.
+3. Add a long random `JWT_SECRET`. Keep all of these variables server-only.
+4. Leave `VITE_API_URL` empty for this same-project API, then redeploy.
+
+On first API access, the `tyres` collection is seeded from the catalog JSON files.
+Price overrides, dealer prices, and rate configurations are stored in MongoDB.
+For local development, set `VITE_API_URL=http://localhost:4000` and run the API
+with a Node server that uses the same environment variables.
+
 ## Project structure
 ```
 src/

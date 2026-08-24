@@ -37,7 +37,7 @@ export default function FlatPriceTable({
 
   return (
     <div className="border border-gray-200 rounded-lg overflow-x-auto">
-      <table className="w-full text-sm">
+      <table className="w-full min-w-[760px] text-sm">
         <thead className="bg-brand-red text-white">
           <tr>
             <th className="text-left px-4 py-3"><SortHeader label="Tyre Size" sortField="size" /></th>
