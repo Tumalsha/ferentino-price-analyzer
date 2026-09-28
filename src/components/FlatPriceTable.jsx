@@ -1,7 +1,7 @@
-import { Fragment } from 'react';
-import { ArrowUpDown } from 'lucide-react';
-import EditableCell from './EditableCell.jsx';
-import { COMPETITOR_BRANDS } from '../store/usePriceStore.js';
+import { Fragment } from "react";
+import { ArrowUpDown } from "lucide-react";
+import EditableCell from "./EditableCell.jsx";
+import { COMPETITOR_BRANDS } from "../store/usePriceStore.js";
 
 export default function FlatPriceTable({
   items,
@@ -13,23 +13,23 @@ export default function FlatPriceTable({
   editable,
   onFieldChange, // (rowKey, field, value) => void — only used when editable
 }) {
-  const showEx = vatMode === 'both' || vatMode === 'exVat';
-  const showInc = vatMode === 'both' || vatMode === 'incVat';
+  const showEx = vatMode === "both" || vatMode === "exVat";
+  const showInc = vatMode === "both" || vatMode === "incVat";
 
   const sortRows = (items) => {
     if (!sortKey) return items;
     return [...items].sort((a, b) => {
       const av = a[sortKey];
       const bv = b[sortKey];
-      const cmp = typeof av === 'string' ? av.localeCompare(bv) : av - bv;
-      return sortDir === 'asc' ? cmp : -cmp;
+      const cmp = typeof av === "string" ? av.localeCompare(bv) : av - bv;
+      return sortDir === "asc" ? cmp : -cmp;
     });
   };
 
   const SortHeader = ({ label, sortField }) => (
     <button
       onClick={() => onSort(sortField)}
-      className="flex items-center gap-1 text-xs font-semibold uppercase tracking-wide"
+      className="flex w-full items-center justify-center gap-1 text-xs font-semibold uppercase tracking-wide"
     >
       {label} <ArrowUpDown size={12} />
     </button>
@@ -37,28 +37,45 @@ export default function FlatPriceTable({
 
   return (
     <div className="border border-gray-200 rounded-lg overflow-x-auto">
-      <table className="w-full min-w-[760px] text-sm">
+      <table className="w-full min-w-[980px] text-sm">
         <thead className="bg-brand-red text-white">
           <tr>
-            <th className="text-left px-4 py-3"><SortHeader label="Tyre Size" sortField="size" /></th>
-            <th className="text-left px-4 py-3"><SortHeader label="Tread Pattern" sortField="pattern" /></th>
-            {showEx && <th className="text-right px-4 py-3">Price Without VAT</th>}
-            {showInc && <th className="text-right px-4 py-3">Price With VAT</th>}
+            <th className="text-center px-4 py-3">
+              <SortHeader label="Tyre Size" sortField="size" />
+            </th>
+            <th className="text-center px-4 py-3">
+              <SortHeader label="Tread Pattern" sortField="pattern" />
+            </th>
+            {showEx && (
+              <th className="text-center px-4 py-3">Price Without VAT</th>
+            )}
+            {showInc && (
+              <th className="text-center px-4 py-3">Price With VAT</th>
+            )}
             {compareMode &&
               COMPETITOR_BRANDS.map((brand) => (
-                <th key={brand} className="text-right px-3 py-3">{brand}</th>
+                <th key={brand} className="text-center px-3 py-3">
+                  {brand}
+                </th>
               ))}
           </tr>
         </thead>
         <tbody>
           {sortRows(items).map((row) => {
             const competitorValues = compareMode
-              ? COMPETITOR_BRANDS.map((brand) => row[brand]).filter((v) => v != null)
+              ? COMPETITOR_BRANDS.map((brand) => row[brand]).filter(
+                  (v) => v != null,
+                )
               : [];
-            const lowest = compareMode ? Math.min(row.incVat, ...competitorValues) : null;
+            const lowest = compareMode
+              ? Math.min(row.incVat, ...competitorValues)
+              : null;
 
             return (
-              <tr key={row.rowKey} className="border-t border-gray-100 hover:bg-gray-50">
+              <tr
+                key={row.rowKey}
+                className="border-t border-gray-100 hover:bg-gray-50"
+              >
                 <td className="px-4 py-3 font-medium">{row.size}</td>
                 <td className="px-4 py-3 text-blue-700">{row.pattern}</td>
                 {showEx && (
@@ -66,7 +83,7 @@ export default function FlatPriceTable({
                     <EditableCell
                       value={row.exVat}
                       editable={editable}
-                      onChange={(v) => onFieldChange(row.rowKey, 'exVat', v)}
+                      onChange={(v) => onFieldChange(row.rowKey, "exVat", v)}
                     />
                   </td>
                 )}
@@ -76,7 +93,7 @@ export default function FlatPriceTable({
                       value={row.incVat}
                       editable={editable}
                       isLowest={compareMode && row.incVat === lowest}
-                      onChange={(v) => onFieldChange(row.rowKey, 'incVat', v)}
+                      onChange={(v) => onFieldChange(row.rowKey, "incVat", v)}
                     />
                   </td>
                 )}
